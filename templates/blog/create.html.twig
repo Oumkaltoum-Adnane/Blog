@@ -6,8 +6,16 @@
 
 {% block body %}
  
-   <h1 class="display-4 text-center my-5">création d'un nouvel article </h1> 
+   <h1 class="display-4 text-center my-5">
+   {# Si la variable editMode renvoie TRUE, cela veut dire que l'id de l'article est définit, c'est une modification #}
+   {% if editMode %}
+         Modification de l'article n {{ editMode }}
+   {% else %}{# Sinon, l'id n'est pas définit, c'est une insertion #}
+      création d'un nouvel article
+   {% endif %}
 
+  </h1> 
+{# 
     <form method="post" class="col-md-5 mx-auto">
         <div class="form-group">
             <label for="title">Titre</label>
@@ -22,6 +30,50 @@
             <input type="text" class="form-control" id="image" name="image">
         </div>
         <button type="submit" class="btn mb-5 "style="background-color: #20c997;">Enregistrer l'article</button>
-    </form>
+    </form> #}
+   {# form(): fonction twig qui permet d'afficher le rendu #}
+
+   {# form_end() : fonction Twig,on ferme la balise <form> #}
+
+   {{ form_start(formArticle, {'attr': {'class':'col-md-5 mx-auto'} }) }}
+
+      {{ form_row(formArticle.title,{
+             'attr':{'placeholder':"saisir le titre de l'article" ,"maxlenght": false, "pattern":false},
+             'label': "titre de l'article"
+             })    
+
+        }}
+
+      {{ form_row(formArticle.content,{
+             'attr':{'placeholder':"contenue de l'article",
+             'rows': 15
+             },
+             'label': "titre de l'article"
+             })    
+
+       }}
+
+      {{ form_row(formArticle.image,{
+
+             'attr':{'placeholder':"saisir l'URL de l'image"},
+             'label': "URL de l'image"
+             })
+       }}
+
+     <button type ="submit" class="btn btn-secondary">
+        {% if editMode %}
+          
+           Enregistrer les modification
+        {% else %}
+           Enregistrer l'article 
+        {% endif %}
+
+     
+     
+     
+     </button> 
+
+    {{ form_end(formArticle) }}
+ {# form_end() : fonction Twig,on ferme la balise <form> #}
 
 {% endblock %}
