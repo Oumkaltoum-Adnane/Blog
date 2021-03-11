@@ -26,7 +26,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                     <a href="{{ path('blog_show',{'id' :data.id }) }}" class="btn btn-sm btn-outline-secondary">Lire la suite</a>
-                    <a  href="" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                    <a href="{{ path('blog_edit',{'id' :data.id }) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
                     </div>
                     {# la bdd renvoi un objet issue de la classe Datetime,on ne peut la convertir en une #}
                     {# on utilise un filtre twig pour afficher la date: date("m/d/Y" #}
