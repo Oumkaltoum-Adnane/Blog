@@ -3,15 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Form\ArticleFormType;
+use App\Form\CommentFormType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BlogController extends AbstractController
 {
@@ -155,15 +157,42 @@ class BlogController extends AbstractController
      * 
      * @Route("/blog/{id}", name="blog_show")
      */
-    public function show(Article $article): Response
+    public function show(Article $article,Request $request,EntityManagerInterface $manager ): Response
     {
-        dump($article);
+       // dump($article);
+
+       $comment = new Comment; 
+
+       $formComment= $this->createForm(CommentFormType::class,$comment);
+       dump($request);
+
+       $formComment->handleRequest($request);   
+       dump($comment);
+
+       if($formComment->isSubmitted() && $formComment->isValid())
+       {
+           $comment->setCreatedAt(new \DateTime)
+                   ->setArticle($article);// on relie le commentaire a l'article
+                   //la méthode set Article() attend en argument un objet issu de la class Article,c'est a dire un article de la BDD
+
+                 $manager->persist($comment);
+                 $manager->flush();
+
+                $this->addFlash('success',"Le commentaire a été bien posté ! ");
+            
+           return $this->redirectToRoute('blog_show',[
+               'id' => $article->getId()
+           ]);      
+
+       }
+  
+
 
         return $this->render('blog/show.html.twig',[
-           'articleTwig' =>$article 
+           'articleTwig' =>$article ,
            // on envoi sur le template les données selectionnées en BDD, c'est à dire les informations d'1 article en fonction l'id transmit dans l'URL
           // $repoArticle est un objet issu de la classe ArticleRepository
-              
+           'formComment' => $formComment->createView()  
         ]);
     }
     /*
