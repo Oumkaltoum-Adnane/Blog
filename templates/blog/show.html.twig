@@ -10,8 +10,19 @@
 {% block body %}
 
    <h1 class="display-4 text-center my-5">{{articleTwig.title}}</h1>
+    {# app : varaible Twig qui contient toute les informations stockées en session #}
+    {# flashes() : méthode permettant d'accéder aux message utilisateur stockés en session #}
+    {# il peut y avoir plusieurs messages stockés donc nous sommes obligé de boucler #}
 
-      <div class="album py-5 bg-light">
+   {% for message in app.flashes('success') %}
+      <div class="col-md-5 bg-success p-4 rounded mx-auto text-center text-white mb-3">
+      {# message est une variable de reception qui contient 1 message utilisateur par tour de boucle #}
+      {{ message }}
+      </div>
+
+   {% endfor %}
+
+      {# <div class="album py-5 bg-light"> #}
 
         <div class="row justify-content-center">
             
@@ -21,17 +32,55 @@
                 <img src="{{articleTwig.image|replace({'600/400':'1000/300'})}}"alt="{{articleTwig.title}}">
 
                   <div class="card-body">
-                  <p class="card-text">{{articleTwig.content|striptags}}</p>
+                  <p class="card-text">{{articleTwig.content|raw}}</p>
 
                   <div class="d-flex justify-content-between align-items-center">
                  
-                    <small class="text-muted">Posté le {{articleTwig.createdAT|date("d/m/Y")}} à {{articleTwig.createdAT|date('H:i:s')}}</small>
+                    <small class="text-muted">Posté le {{articleTwig.createdAT|date("d/m/Y")}} à {{articleTwig.createdAT|date('H:i:s')}} dans la categorie <strong>{{articleTwig.Category.title}}</strong></small>
                 </div>
                 </div>
-            </div>
+             </div>
+          <h4 class="my-5"> Donnez votre avis</h4>
+          {# on affiche le formulaire d'ajout de commentaire envoyé par BlogConroller -->show() --> render() #}
+            {{ form_start(formComment, {'attr': {'class':'col-md-10 mx-auto'} }) }}
+
+               {{ form_row(formComment.author,{'label':"Nom d'utilisateur"}) }}
+
+               {{ form_row(formComment.content,{'label':"saisir votre commentaire"}) }}
+
+             <button type="submit" class="btn btn-warning"> poster votre commentaire</button>
+
+            {{ form_end(formComment) }}
+           <h4 class="my-5">Vos réactions .....</h4>
+           <div class="row bg-light mb-5">
+           {# articleTwig.comment : retourne tout les commentaires associés à l'article (relation bi-drectionnelle / relations entre les tables) #}
+          {# plusieurs commentaires sont associés à l'article, donc nous sommes obligé de boucler FOR #}
+
+
+           {% for comment in articleTwig.comments %}
+            {# {{ dump(comment) }} #}
+           <div class="col-md-4 py-2">
+                <span><strong>{{ comment.author }}</strong></span>
+                <small class="font-italic">
+                Posté le {{ comment.createdAT|date('d/m/y')}} à {{comment.createdAT|date('H:i:s')}}
+                </small>
+           </div>
+           <div class="col-md-8 py-2">
+               {{ comment.content|striptags}}
+               <hr>
+           </div>
+             
+           {% endfor %} 
+           
+           
+           
+           </div>
+
+
+
             </div>
              
          </div>
-     </div>
+     {# </div> #}
    
 {% endblock %}   

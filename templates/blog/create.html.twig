@@ -39,16 +39,20 @@
 
       {{ form_row(formArticle.title,{
              'attr':{'placeholder':"saisir le titre de l'article" ,"maxlenght": false, "pattern":false},
-             'label': "titre de l'article"
+             'label': "Titre de l'article"
              })    
 
         }}
+
+      {{ form_row(formArticle.category,{'label': "Categories "  })    
+
+      }}  
 
       {{ form_row(formArticle.content,{
              'attr':{'placeholder':"contenue de l'article",
              'rows': 15
              },
-             'label': "titre de l'article"
+             'label': "Titre de l'article"
              })    
 
        }}
