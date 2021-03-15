@@ -1,0 +1,26 @@
+{% extends  'base.html.twig' %}
+
+{% block title %}
+    Créer votre compte
+{% endblock %}
+
+
+{% block body %}
+
+<h1 class="display-4 text-center my-5">créer votre compte </h1>
+
+{{ form_start(formRegistration,{'attr':{'class':'col-md-4 mx-auto'}})}} {# 4 #}
+
+    {{ form_row(formRegistration.username,{'label': "Nom de l'utilisateur"}) }}
+
+    {{ form_row(formRegistration.email)}}
+
+    {{ form_row(formRegistration.password,{'label': "Mot de passe"})}}
+
+    {{ form_row(formRegistration.confirm_password,{'label': "confirmer votre mot de passe"}) }}
+    
+    <button type="submit" class="btn btn-warning">Continuez </button>
+
+{{form_end(formRegistration)}}
+
+{% endblock %}

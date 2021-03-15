@@ -8,6 +8,8 @@
         {% endblock %}</title>
       
         {% block stylesheets %}
+        {# fontawesome #}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
         {# bootstrap #}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
@@ -30,6 +32,21 @@
                     {# la focntion path()Twig permet de définir la route et le chemin du line <a>,il faut lui fournir le nom de la route @Route('',name='home')) #}
                         <a class="nav-link" href="{{ path('home') }}" >Home </a>
                     </li>
+                    {# si app.user retourne TRUE,cela veut dire que l'internaut est bien connecté  #}
+                    {% if app.user %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Mon compte </a>
+                        </li>
+                    {% else %}
+                         <li class="nav-item">
+                            <a class="nav-link" href="{{ path('security_registration') }}">Creer votre compte </a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" href="{{ path('security_login') }}">Identifiez-vous </a>
+                        </li>
+
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('blog') }}">affichage des articles</a>
                     </li>
@@ -47,6 +64,13 @@
                         <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </li>
+                     {% if app.user %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('security_logout') }}"><i class="fas fa-power-off"></i>Deconnexion</a>
+                        </li>
+
+                    {% endif %}
             
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
