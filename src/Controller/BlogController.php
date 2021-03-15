@@ -33,20 +33,7 @@ class BlogController extends AbstractController
      */
     public function index(ArticleRepository $repo): Response
     {
-        /*
-            Pour selectionner des données dans une table SQL, nous devons absolument avoir accès à la classe Repository de l'entité correspondante 
-            Un Repository est une classe permettant uniquement d'executer des requetes de selection en BDD (SELECT)
-            Nous devons donc accéder au repository de l'netité Article au sein de notre controller  
-
-            On appel l'ORM doctrine (getDoctrine()), puis on importe le repositoritory de la classe Article grace à la méthode getRepository()
-            $repo est un objet issu de la classe ArticleRepository
-            cet objet contient des méthodes permettant d'executer des requetes de selections
-            findAll() : méthode issue de la classe ArticleRepository permettant de selectionner l'ensemble de la table SQL 'Article'
-        */
-        //                            import le contenu d'une entité
-        // $repo = $this->getDoctrine()->getRepository(Article::class);
-
-    //outil de debugage de symfony 
+        
         dump($repo);
 
         $articles = $repo->findAll();// equivalent de SELECT * from artcile +fetchAll

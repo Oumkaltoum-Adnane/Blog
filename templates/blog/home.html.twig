@@ -15,6 +15,9 @@
 {# {{  }} -> doucbles accolades, ce que l'on appel l'interpolation #}
 {# age : variable Twig qui est transmise par le controller, via la méthode home() -> render([]) #}
 
+{# app : variable Twig qui contient toute les informations de la session #}
+{# app.user: contient toute les information en session de l'utilisateur connecté #}
+{# {{ dump(app.user)}} #}
 
 {% if age > 18 %}
 
