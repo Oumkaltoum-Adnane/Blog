@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
@@ -53,14 +54,23 @@ class SecurityController extends AbstractController
         ]);
     }
     /**
-     * 
+     * AuthenticationUtils permet de récupérer le dernier Email saisie au moment de la connexion
+     * AuthenticationUtils permet de récupérer les messages l'erreurs en cas de mauvaise connexion
      * @Route("/connexion", name="security_login")
      * 
      */
-    public function login(): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
+       //recuperation 
+        $error = $authenticationUtils->getLastAuthenticationError();
 
-        return $this->render('security/login.html.twig');
+        //recupération du dernier username(email)saisi par l'internaute dans le formulaire de connexion en cas d'erreur
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig',[
+            'error' =>$error,
+            'lastUsername'=>$lastUsername
+        ]);
     }
     /**
      * @Route("/deconnexion",name="security_logout")
