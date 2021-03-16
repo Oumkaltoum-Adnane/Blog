@@ -79,6 +79,11 @@ class User implements UserInterface
 
   public $confirm_password;
 
+  /**
+   * @ORM\Column(type="json")
+   */
+  private $roles = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -125,7 +130,7 @@ class User implements UserInterface
     // Cette interface contient des méthodes abstraites que nous sommes obligé de déclarer
     //  méthodes obligatoires : getUsername(), getPassword(), eraseCredentials(), getSalt() et getRoles()
 
-    //
+    //cette méthode est uniquement destinée a nettoyer les mots de passe en texte brut eventuellement stockés
     public function eraseCredentials()
     {
         
@@ -139,6 +144,14 @@ class User implements UserInterface
     // Cette fonction renvoi un tableau de chaine de caractères Renvoi les rôles accordés à l'utilisateur
     public function getRoles()
     {
-        return ["ROLE_USER"];
+        //return ["ROLE_USER"];
+        return $this->roles; // on retourne les roles stockés en BDD
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 }

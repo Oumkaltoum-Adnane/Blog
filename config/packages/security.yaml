@@ -44,5 +44,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        #on précise à symfony que seulement les ROLE_ADMIN stockés en BDD auront accés a la route
+         - { path: ^/admin, roles: ROLE_ADMIN }
+    
+    access_denied_url: /blog
+
+

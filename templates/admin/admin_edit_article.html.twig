@@ -1,0 +1,28 @@
+
+{% extends "base.html.twig" %}
+
+{% block title %}
+
+ BACKOFFICE|modification articles
+
+{% endblock %}
+
+{% block body %}
+
+<h1 class="display-4 text-center">Modification de l'articles n <span class="text-info">{{ idArticle }}</h1>
+
+{{form_start(formArticle,{'attr':{'class':'col-md-5 mx-auto'}}) }}
+
+   {{ form_row(formArticle.title,{'label':"titre de l'article"})}}
+
+   {{ form_row(formArticle.category,{'label':"catégorie"}) }}
+
+   {{ form_row(formArticle.content,{'label':"contenu de l'article",'attr': {'rows':15 }}) }}
+
+   {{ form_row(formArticle.image)}}
+
+   <button class="btn btn-secondary mb-5">Modifier l'article</button>
+
+{{form_end(formArticle) }}
+
+{% endblock %}

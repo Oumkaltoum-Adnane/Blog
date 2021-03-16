@@ -1,0 +1,48 @@
+{% extends "base.html.twig"%}
+
+{% block title %}
+   
+   BACKOFFICE |Gestion des category
+
+{% endblock %}
+{% block body %}
+   
+ <h1 class="display-4 text-center mt-5"> BACKOFFICE | Gestion des Categories</h1>
+
+<table class= " table table-bordered text-center ">
+
+    <tr>
+       
+       {% for oneColonne in colonnes %}
+
+                    <th> {{ oneColonne|upper }}</th>   
+
+       {% endfor %} 
+       <th>EDIT</th>
+       <th>SUPP</th>
+         
+    </tr>
+       
+     {% for oneCategory in categoryBDD %}
+
+       <tr>
+         <td> {{ oneCategory.id }}</td>
+         <td> {{ oneCategory.title }}</td>
+         <td> {{ oneCategory.description|striptags|slice(0,300) }}...</td>
+
+
+         <td><a href="" class="btn btn-info"><i class="fas fa-edit"></i></a></td>
+
+         <td><a href="" class="btn btn-danger" onclick="return(confirm('voulez-vous supprimer cette article ?'))"><i class="fas fa-trash-alt"></i></a></td>
+
+       </tr>
+
+        
+    {% endfor %}
+  
+   </table>
+     
+
+
+{% endblock %}
+
