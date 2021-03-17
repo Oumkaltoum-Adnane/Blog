@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,16 +22,30 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Assert\NotBlank(
+     *        message = "veuillez renseigner un titre de la catégorie ",
+     *        groups= {"categorie"}
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * 
+     * @Assert\NotBlank(
+     *        message = "veuillez renseigner la description de la catégorie ",
+     *        groups= {"categorie"}
+     * )
      */
     private $description;
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="category")
+     * 
+     * @Assert\NotBlank(
+     *        message = "veuillez renseigner la description de la catégorie "
+     * )
      */
     private $articles;
 

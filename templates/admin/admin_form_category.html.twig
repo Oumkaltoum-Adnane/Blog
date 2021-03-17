@@ -1,1 +1,24 @@
 {% extends  "base.html.twig" %}
+
+{% block title %}
+
+    Modification  categories
+
+{% endblock %}
+
+{% block body %}
+<h1 class="display-4 text-center my-3"> Modification de categorie</h1>
+
+
+{{form_start(formCategorie,{'attr':{'class':'col-md-5 mx-auto'}}) }}
+
+   {{ form_row(formCategorie.title,{'label':"Categorie"})}}
+
+   {{ form_row(formCategorie.description,{'label':"Description ",'attr': {'rows':15 }}) }}
+
+   <button class="btn btn-secondary mb-5">Modifier la categorie </button>
+
+{{form_end(formCategorie) }}
+
+
+{% endblock %}
