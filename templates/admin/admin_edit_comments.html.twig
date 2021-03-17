@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+     
+      BACKOFFICE |Modifications  des comments
+
+{% endblock %}
+
+{% block body %}
+
+     <h1 class="display-4 text-center mt-5"> Modifications  des comments</h1>
+
+     {{form_start(formComment,{'attr':{'class':'col-md-5 mx-auto'}}) }}
+
+        {{ form_row(formComment.author,{'label':"titre de l'article"})}}
+
+        {{ form_row(formComment.content,{'label':"contenu du commentaire",'attr': {'rows':15 }}) }}
+
+        <button class="btn btn-secondary mb-5">Modifier le commentaire </button>
+
+    {{form_end(formComment) }}
+
+{% endblock %}

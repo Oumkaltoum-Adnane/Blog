@@ -29,22 +29,22 @@
             
             {% if oneColonne == 'createdAt' %}
 
-                <th> DATE </th>
+                <th style="background-color: #20c997;"> DATE </th>
 
             {% else %}
 
                     {# upper : filtre twig permettant d'afficher le nom des colonnes en majuscule #}
 
-                    <th> {{ oneColonne|upper }}</th>
+                    <th style="background-color: #20c997;"> {{ oneColonne|upper }}</th>
                     
             {% endif %}  
 
        {% endfor %} 
 
-           <th>CATEGORIES</th>
-           <th>Nb COMMENTAIRES</th>
-           <th>EDIT</th>
-           <th>SUPP</th>
+           <th style="background-color: #20c997;">CATEGORIES</th>
+           <th style="background-color: #20c997;">Nb COMMENTAIRES</th>
+           <th style="background-color: #20c997;">EDIT</th>
+           <th style="background-color: #20c997;">SUPP</th>
     
     </tr>
        {# articlesBdd : variable Twig envoyé dans le template par AdminController qui contient tout les articles de la table SQl Article #}

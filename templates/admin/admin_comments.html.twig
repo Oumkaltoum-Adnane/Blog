@@ -1,0 +1,65 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+
+     BACKOFFICE |Gestion des comments
+
+{% endblock %}
+
+{% block body %}
+
+     <h1 class="display-4 text-center mt-5"> BACKOFFICE | Gestion des Comments</h1>
+
+
+   
+<div class="container">
+<table class= " table table-bordered text-center my-5   ">
+
+    <tr>
+       <th style="background-color: #20c997;"> ARTICLE </th>
+       {% for oneColonne in colonnes %}
+
+               {% if oneColonne == 'createdAt' %}
+
+                <th style="background-color: #20c997;"> DATE </th>
+
+               {% elseif oneColonne == 'author' %}
+
+                <th style="background-color: #20c997;"> Auteur</th> 
+
+               {% else %}
+
+                    <th style="background-color: #20c997;"> {{ oneColonne|upper }}</th>
+                    
+              {% endif %}  
+       {% endfor %} 
+ 
+       <th style="background-color: #20c997;">EDIT</th>
+       <th style="background-color: #20c997;">SUPP</th>
+         
+    </tr>
+       
+     {% for oneComment in commentsBdd %}
+
+       <tr>
+         <td> {{ oneComment.Article.title}}</td>
+         <td> {{ oneComment.id }}</td>
+         <td> {{ oneComment.author }}</td>
+         <td> {{ oneComment.content|striptags|slice(0,100) }}...</td>
+         <td> {{ oneComment.createdAt|date('d/m/y à H:i:s')}}</td>
+
+
+         <td><a href="{{ path('admin_edit_comment',{'id': oneComment.id}) }}" class="btn btn-info"><i class="fas fa-edit"></i></a></td>
+
+         <td><a href="{{ path('admin_remove_comment',{'id': oneComment.id}) }}" class="btn btn-danger" onclick="return(confirm('voulez-vous supprimer cette category ?'))"><i class="fas fa-trash-alt"></i></a></td>
+
+       </tr>
+
+        
+    {% endfor %}
+  
+   </table>
+   </div>  
+
+{% endblock %}
+
