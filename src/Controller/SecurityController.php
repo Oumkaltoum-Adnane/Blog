@@ -22,8 +22,10 @@ class SecurityController extends AbstractController
     {
         $user = new User;//1
 
-        $formRegistration = $this->createForm(RegistrationFormType::class,$user);//2
-
+        $formRegistration = $this->createForm(RegistrationFormType::class,$user,[
+            'valisation_groups' => ['registration']
+        ]);//2
+       // Nous définissons un groupe de validation de contraintes afin qu'elles ne soient prise en compte uniquement lors de l'inscription et non lors de la modification dans le BackOffice
         dump($request);//6
 
         $formRegistration->handleRequest($request);//7
@@ -37,6 +39,8 @@ class SecurityController extends AbstractController
             dump($hash);//15
 
             $user->setPassword($hash);//16
+            //pour chaque inscription ,l'utilisateur aura par defaut le ROLE_USER
+            $user->setRoles(["ROLE_USER"]);//16
 
             dump($user);//17
 

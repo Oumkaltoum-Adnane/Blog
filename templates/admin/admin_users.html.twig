@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+ 
+ BACKOFFICE| gestion des membres
+{% endblock %}
+
+
+
+{% block body %}
+
+     <h1 class="display-4 text-center mt-5"> gestion des membres</h1>
+
+
+ {% for message in app.flashes('success') %}
+
+     <div class="col-md-5 bg-success p-4 rounded mx-auto text-center text-white mb-3">
+      {# message est une variable de reception qui contient 1 message utilisateur par tour de boucle #}
+      {{ message }}
+      </div>
+        
+{% endfor %}
+
+     <div class="container">
+      <table class= " table table-bordered text-center my-5   ">
+
+    <tr>
+       
+       {% for oneColonne in colonnes %}
+
+          {% if oneColonne != 'password' %}
+              <th style="background-color: #20c997;"> {{ oneColonne|upper }}</th>   
+         {% endif %}   
+
+       {% endfor %} 
+     
+       <th style="background-color: #20c997;">EDIT</th>
+       <th style="background-color: #20c997;">SUPP</th>
+         
+    </tr>
+       
+     {% for oneUser in usersbdd %}
+
+       <tr>
+         <td> {{ oneUser.id }}</td>
+         <td> {{ oneUser.email }}</td>
+         <td> {{ oneUser.username}}</td>
+
+         {% if oneUser.roles[0] == 'ROLE_ADMIN'%}
+            <td class="bg-secondary text-white"> administrateur </td>
+
+         {% else %}   
+             <td> utilisateur </td>
+        {% endif %} 
+
+      {# lien modification #}
+         <td><a href="{{ path('admin_edit_user',{'id': oneUser.id}) }}" class="btn btn-info"><i class="fas fa-edit"></i></a></td>
+      {# line suppressin #}
+         <td><a href="{{ path('admin_remove_user',{'id': oneUser.id}) }}" class="btn btn-danger" onclick="return(confirm('voulez-vous supprimer ce user ?'))"><i class="fas fa-trash-alt"></i></a></td>
+
+       </tr>
+
+        
+    {% endfor %}
+  
+   </table>
+   </div>  
+
+{% endblock %}

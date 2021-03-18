@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Category;
+use App\Form\AdminRegistrationFormType;
 use App\Form\ArticleFormType;
 use App\Form\CommentFormType;
 use App\Form\CategoryFormType;
+use App\Repository\UserRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
 use App\Repository\CategoryRepository;
@@ -191,6 +194,25 @@ class AdminController extends AbstractController
         $colonnes = $manager->getClassMetadata(Comment::class)->getFieldNames();
 
         $commentsbdd = $repoComment->findAll();
+
+        if($comment)
+        {
+            $id = $comment->getId();
+            $auteur=$comment->getAuthor();// on stock l'auteur du commentaire a supprimé
+
+            $date = $comment->getCreatedAt();//$date objet class Date time
+
+            $dateFormat = $date->format('d/m/y a H:i:s');
+            dump ($dateFormat);
+
+            $manager->remove($comment);//on prepare et on garde n mémoire la requete de suppression
+            $manager->flush();//on execute la requete de suppression
+
+            $this->addFlash('success',"le commenatire n$id a posté par l'auteur $auteur la $dateFormat été supprimé avec succés ! ");
+
+            //apres la suppression,on redirige l'utilisateur vers l'affichage des commentaires
+            return $this->redirectToRoute('admin_comments');
+        }
          return $this->render('admin/admin_comments.html.twig',[
              'colonnes' => $colonnes,
              'commentsBdd' => $commentsbdd
@@ -203,6 +225,8 @@ class AdminController extends AbstractController
      */
      public function editComment(Comment $comments,Request $request,EntityManagerInterface $manager ):Response
      {
+         dump($comments);
+
         $formComment = $this->createForm(CommentFormType::class,$comments);
          dump($request);
  
@@ -210,12 +234,17 @@ class AdminController extends AbstractController
  
          if($formComment->isSubmitted() && $formComment->isValid())
          {
-          
+              $id = $comments->getId();
+              $auteur = $comments->getAuthor();
+              $date = $comments->getCreatedAt();
+              $dateFormat = $date->format('d/m/Y à H:i:s');
+
              $manager->persist($comments);
              $manager->flush();
 
+             $this->addFlash("success","le commentaire n $id posté par  $auteur le $dateFormat a été modifié avec succès ! ");
 
- 
+
              return $this->redirectToRoute('admin_comments');
          }   
         return $this->render('admin/admin_edit_comments.html.twig',[
@@ -224,13 +253,70 @@ class AdminController extends AbstractController
 
         ]);
      }
+     /**
+      *
+      *méthode permettant d'afficher les utilisateurs stockes en BDD sous forme de tableau HTML
+      * @Route("/admin/user",name="admin_users")
+      * @Route("/admin/user/{id}/remove",name="admin_remove_user")
+      */
+    public function adminUsers( User $user =null ,UserRepository $repoUser,EntityManagerInterface $manager): Response
+    {
+          $colonnes = $manager->getClassMetadata(User::class)->getFieldNames();
+          dump($colonnes);
+
+          $usersbdd = $repoUser->findAll(); 
+
+          dump($usersbdd);
+
+          if($user)
+          {
+              $manager->remove($user);
+              $manager->flush();
+
+              $this->addFlash('success',"l'utilisateur a été supprimé avec succés ! ");
+              return $this->redirectToRoute('admin_users');
+          }
+  
+      
+
+
+        return $this->render('admin/admin_users.html.twig',[
+            'colonnes' => $colonnes,
+            'usersbdd' => $usersbdd
+
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user/{id}/edit", name="admin_edit_user")
+     */
+
+     public function adminUsersEdit(User $user, EntityManagerInterface $manager,Request $request ):Response
+     {
+         dump($user);
+
+         $formUser = $this->createForm(AdminRegistrationFormType::class,$user);
+
+         $formUser->handleRequest($request);
+
+         if($formUser->isSubmitted() && $formUser->isValid())
+         {
+             $id= $user->getId();
+             $username = $user->getUsername();
+             $manager->persist($user);
+             $manager->flush();
+             $this->addFlash('success',"l'itulisateur $username ID$id a été modifié avec succés !");
+
+             return $this->redirectToRoute('admin_users');
+
+         }
+
+         return $this->render('admin/admin_edit_user.html.twig',[
+            'formUser'=>$formUser->createView()
+
+         ]);
+     }
 
  }
-/*
-            1. Faites en sorte de récupérer les métadonnée de la table Comment afin de récupérer le nom des champs/colonne de la table SQL comment et les transmettre au template
-            2. Afficher le nom des champs/colonne sous forme de tableau HTML
-            3. Dans le controller, seelctionner tout les commentaires stockés en BDD et les transmettre au template
-            4. Afficher tout les commentaires de la BDD sous forme de tableau HTML dans le template
-            5. Prévoir 2 liens (modification / suppression) pour chaque commentaire 
-            6. Réaliser le traitement permettant de supprimer un commentaire dans la BDD
-         */
+
+

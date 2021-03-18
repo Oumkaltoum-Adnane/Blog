@@ -31,7 +31,7 @@ class CategoryFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Category::class,
-            'validation_group'=> ['categorie']
+            'validation_groups'=> ['categorie']
         ]);
     }
 }

@@ -56,10 +56,12 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\EqualTo(
      *    propertyPath="confirm_password",
-     *    message="les mots de passe ne correspondent pas"
+     *    message="les mots de passe ne correspondent pas",
+     *    groups={"registration"}
      * )
      * * @Assert\NotBlank(
-     *        message = "veuillez renseigner votre mot de passe "
+     *        message = "veuillez renseigner votre mot de passe ",
+     *         groups={"registration"}
      * )
      */
     private $password;
@@ -70,10 +72,12 @@ class User implements UserInterface
      * 
      *  @Assert\EqualTo(
      *    propertyPath="password",
-     *    message="les mots de passe ne correspondent pas"
+     *    message="les mots de passe ne correspondent pas",
+     *     groups={"registration"}
      * )
      * * @Assert\NotBlank(
-     *        message = "merci de confirmer votre mot de passe "
+     *        message = "merci de confirmer votre mot de passe ",
+     *         groups={"registration"}
      * )
      */
 
